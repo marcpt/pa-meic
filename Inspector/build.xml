@@ -1,0 +1,52 @@
+<project name="PA-Projecto-1" default="dist" basedir=".">
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <!--<tstamp/> -->
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac includeantruntime="false" srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Put everything in ${build} into the inspector.jar file -->
+    <jar jarfile="inspector.jar" basedir="${build}"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  	<delete file="inspector.jar"/>
+  	</target>
+	
+	<target name ="zip-proj" description="zip project files">
+		<delete file="inspector.zip"/>
+		<zip destfile="inspector.zip">
+		    <zipfileset dir="src/" excludes="ist/meic/pa/tests/**" prefix="g06/src/" />
+		    <zipfileset dir="." includes="build.xml" prefix="g06/" />
+			<zipfileset dir="." includes="p1.pdf" prefix="g06/" />
+		  </zip>
+	</target>
+	
+	<target name ="zip-all" description="zip project files, including test class">
+			<delete file="inspector-testing.zip"/>
+			<zip destfile="inspector-testing.zip">
+			    <zipfileset dir="src/" prefix="g06/src/" />
+			    <zipfileset dir="." includes="build.xml" prefix="g06/" />
+				<zipfileset dir="." includes="p1.pdf" prefix="g06/" />
+			  </zip>
+		</target>
+		
+</project>

@@ -1,0 +1,53 @@
+<project name="Tracer for Java" default="dist" basedir=".">
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="cp" value="javassist.jar"/>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <!--<tstamp/> -->
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac includeantruntime="false" classpath="${cp}" srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Put everything in ${build} into the inspector.jar file -->
+    <jar jarfile="tracer.jar" basedir="${build}" excludes="Test*.class"/>
+  </target>
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  	<delete file="tracer.jar"/>
+  	</target>
+	
+	<target name ="zip-proj" description="zip project files">
+		<delete file="tracer.zip"/>
+		<zip destfile="tracer.zip">
+		    <zipfileset dir="src/" excludes="ist/meic/pa/tests/**" prefix="g06/src/" />
+		    <zipfileset dir="." includes="build.xml" prefix="g06/" />
+			<zipfileset dir="." includes="p2.pdf" prefix="g06/" />
+		  </zip>
+	</target>
+	
+	<target name ="zip-all" description="zip project files, including test class">
+			<delete file="tracer-testing.zip"/>
+			<zip destfile="tracer-testing.zip">
+			    <zipfileset dir="src/" prefix="g06/src/" />
+			    <zipfileset dir="." includes="build.xml" prefix="g06/" />
+				<zipfileset dir="." includes="p2.pdf" prefix="g06/" />
+			  </zip>
+		</target>
+		
+</project>
